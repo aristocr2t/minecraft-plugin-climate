@@ -1,0 +1,176 @@
+# Climate player- and admin-facing strings. Fallback: en.
+actionbar: 'Среда: {0}°C · Тело: {1}°C ({2})'
+already-running: уже выполняется {0} ({1})
+apply-started: '{0}: чанков в работе {1}{2}'
+biome.badlands: бездорожье
+biome.beach: пляж
+biome.birch_forest: берёзовый лес
+biome.cherry_grove: вишнёвая роща
+biome.cold_ocean: холодный океан
+biome.dark_forest: тёмный лес
+biome.deep_dark: глубокая тьма
+biome.deep_ocean: глубокий океан
+biome.desert: пустыня
+biome.dripstone_caves: кальцитовые пещеры
+biome.eroded_badlands: эродированное бездорожье
+biome.flower_forest: цветочный лес
+biome.forest: лес
+biome.frozen_ocean: замёрзший океан
+biome.frozen_peaks: ледяные пики
+biome.frozen_river: замёрзшая река
+biome.grove: роща
+biome.ice_spikes: ледяные пики
+biome.jagged_peaks: зубчатые пики
+biome.jungle: джунгли
+biome.lush_caves: пышные пещеры
+biome.meadow: лужайка
+biome.ocean: океан
+biome.old_growth_birch_forest: старолиственный берёзняк
+biome.old_growth_pine_taiga: старая хвойная тайга
+biome.old_growth_spruce_taiga: старая еловая тайга
+biome.plains: равнины
+biome.river: река
+biome.savanna: саванна
+biome.savanna_plateau: плато саванны
+biome.snowy_beach: снежный пляж
+biome.snowy_plains: снежные равнины
+biome.snowy_slopes: снежные склоны
+biome.snowy_taiga: снежная тайга
+biome.stony_shore: каменистый берег
+biome.sunflower_plains: равнины подсолнухов
+biome.swamp: болото
+biome.taiga: тайга
+biome.warm_ocean: тёплый океан
+biome.windswept_forest: штормовой лес
+biome.windswept_gravelly_hills: штормовые гравийные холмы
+biome.windswept_hills: штормовые холмы
+biome.windswept_savanna: штормовая саванна
+biome.wooded_badlands: заросшее бездорожье
+block.andesite: андезит
+block.bedrock: коренная порода
+block.blue_ice: синий лёд
+block.clay: глина
+block.coarse_dirt: крупнозёмля
+block.dead_bush: сухой куст
+block.diorite: диорит
+block.dirt: земля
+block.fern: папоротник
+block.frosted_ice: талый лёд
+block.granite: гранит
+block.grass_block: дёрн
+block.gravel: гравий
+block.ice: лёд
+block.magma_block: магматический блок
+block.moss_block: мох
+block.moss_carpet: ковёр из мха
+block.mud: грязь
+block.mycelium: мицелий
+block.netherrack: незерак
+block.oak_leaves: листва
+block.oak_log: дуб
+block.packed_ice: плотный лёд
+block.podzol: подзол
+block.red_sand: красный песок
+block.sand: песок
+block.sandstone: песчаник
+block.seagrass: водоросли
+block.short_grass: трава
+block.snow: снег
+block.stone: камень
+block.tall_grass: высокая трава
+block.water: вода
+blocks: '{0} блоков'
+body-line: 'Тело: {0}°C ({1})'
+bossbar-title: температура тела {0}°C
+clothes-line: 'Одежда: {0}'
+env-cold: холодно
+env-freezing: морозно
+env-hot: жарко
+env-line: 'Среда: {0}°C ({1})'
+env-mild: умеренно
+env-warm: тепло
+illness-cured: вы выздоровели
+illness-days: 'болезнь: {0} дн.'
+illness-got: 'вы заболели: ложитесь на кровать, ешьте, пейте воды'
+illness-hours: 'болезнь: {0} ч.'
+illness-milk-no-help: 'молоко не помогает: болезнь лечится только отдыхом'
+illness-over: болезнь прошла
+illness-rest: 'вы лежите: отдых согревает. Чтобы встать — напишите в чат'
+illness-rest-sick: 'вы лежите: отдых помогает выздороветь. Чтобы встать — напишите в чат'
+illness-title: болезнь
+last-op-none: нет
+map-unavailable: 'карта недоступна: {0}'
+no-limit: нет
+no-overworld: нет мира overworld
+no-permission: нет прав
+not-a-number: 'не число: {0}'
+nothing-running: ничего не выполняется
+nothing-to-change: менять нечего (карта пуста, всё уже в этом состоянии или радиус слишком мал)
+pass-stopped: проход остановлен, прогресс сохранён
+player-not-found: игрок не найден
+probe-result: 'проба {0} {1}: {2}, выше {3}, биом — {4}'
+probe-usage: 'Использование: /climate probe <x> <z>'
+progress: '{0} чанков, изменено {1} клеток'
+radius-not-number: 'радиус должен быть числом: {0}'
+radius-part: ', радиус {0} блоков'
+reason-biome: биом {0}
+reason-end: энд
+reason-heat-near: тепло рядом
+reason-heat-very-near: очень жарко рядом
+reason-height: высота
+reason-line: 'Причина среды: {0}'
+reason-nether: ад
+reason-neutral: нейтрально
+reason-rain: дождь
+reason-season: сезон {0}
+reason-shelter: дом
+reason-surface: под ногами {0}
+reason-thunder: гроза
+reason-water: вода
+reload-done: конфиг перечитан, сезон {0}
+remain-hours: осталось {0} ч {1} мин
+remain-minutes: осталось {0} мин
+scan-finished: 'завершено: {0}'
+scan-never: не запускалось
+scan-not-running: сканирование не идёт
+scan-paused: пауза на кольце {0}
+scan-ring: ', кольцо {0}'
+scan-started: 'сканирование запущено: от центра мира наружу, ограничение {0}'
+scan-stopped: сканирование остановлено, прогресс сохранён
+season-autumn: осень
+season-busy: 'Сезон НЕ изменён: идёт проход по миру, повторите через пару минут'
+season-current: 'сезон: {0} (осталось {1} мин)'
+season-set: 'сезон установлен: {0}'
+season-spring: весна
+season-summer: лето
+season-winter: зима
+set-body: 'температура тела: {0}°C ({1})'
+set-usage: 'использование: /thermo set <температура> (в игре)'
+standup-done: встаём...
+state-burning: перегрев
+state-cold: холодно
+state-cool: прохладно
+state-freezing: обморожение
+state-hot: жарко
+state-normal: норма
+state-original: исходные
+state-warm: тепло
+status-cells: 'клетки: весна {0}, лето {1}, осень {2}, зима {3}, исходные {4}; переписано за последний проход {5}'
+status-chunks: 'чанки по состоянию: {0}'
+status-last: 'последняя операция: {0}'
+status-line: '{0}: body={1}°C state={2} ({3}) env={4}°C reason={5} clothes={6} season={7} remain_min={8}'
+status-map: 'карта: {0} — {1} чанков, {2} клеток, {3} МБ'
+status-only-player: status доступен только игроку или указывай ник
+status-running: 'сейчас идёт {0}: {1}'
+status-scan: 'сканирование: {0}'
+status-scan-done: 'сканирование: карта пройдена до конца'
+status-season: 'Сезон: {0}'
+summary-done: '{0}, {1} с'
+summary-error: 'прервано ошибкой: {0}'
+summary-stopped: 'остановлено: {0}'
+thermometer-given: 'градусник выдан: {0}'
+thermometer-name: Градусник
+unknown-season: неизвестный сезон
+unknown-subcommand: 'неизвестная подкоманда: {0}'
+usage: 'использование: /thermo status|reload|season|set|thermometer|standup'
+whole-map: ', вся карта'

@@ -1,0 +1,176 @@
+# Climate player- and admin-facing strings. Fallback: en.
+actionbar: 'Env: {0}°C · Body: {1}°C ({2})'
+already-running: Already running {0} ({1})
+apply-started: '{0}: {1} chunks queued{2}'
+biome.badlands: badlands
+biome.beach: beach
+biome.birch_forest: birch forest
+biome.cherry_grove: cherry grove
+biome.cold_ocean: cold ocean
+biome.dark_forest: dark forest
+biome.deep_dark: deep dark
+biome.deep_ocean: deep ocean
+biome.desert: desert
+biome.dripstone_caves: dripstone caves
+biome.eroded_badlands: eroded badlands
+biome.flower_forest: flower forest
+biome.forest: forest
+biome.frozen_ocean: frozen ocean
+biome.frozen_peaks: frozen peaks
+biome.frozen_river: frozen river
+biome.grove: grove
+biome.ice_spikes: ice spikes
+biome.jagged_peaks: jagged peaks
+biome.jungle: jungle
+biome.lush_caves: lush caves
+biome.meadow: meadow
+biome.ocean: ocean
+biome.old_growth_birch_forest: old growth birch forest
+biome.old_growth_pine_taiga: old growth pine taiga
+biome.old_growth_spruce_taiga: old growth spruce taiga
+biome.plains: plains
+biome.river: river
+biome.savanna: savanna
+biome.savanna_plateau: savanna plateau
+biome.snowy_beach: snowy beach
+biome.snowy_plains: snowy plains
+biome.snowy_slopes: snowy slopes
+biome.snowy_taiga: snowy taiga
+biome.stony_shore: stony shore
+biome.sunflower_plains: sunflower plains
+biome.swamp: swamp
+biome.taiga: taiga
+biome.warm_ocean: warm ocean
+biome.windswept_forest: windswept forest
+biome.windswept_gravelly_hills: windswept gravelly hills
+biome.windswept_hills: windswept hills
+biome.windswept_savanna: windswept savanna
+biome.wooded_badlands: wooded badlands
+block.andesite: andesite
+block.bedrock: bedrock
+block.blue_ice: blue ice
+block.clay: clay
+block.coarse_dirt: coarse dirt
+block.dead_bush: dead bush
+block.diorite: diorite
+block.dirt: dirt
+block.fern: fern
+block.frosted_ice: frosted ice
+block.granite: granite
+block.grass_block: grass block
+block.gravel: gravel
+block.ice: ice
+block.magma_block: magma block
+block.moss_block: moss block
+block.moss_carpet: moss carpet
+block.mud: mud
+block.mycelium: mycelium
+block.netherrack: netherrack
+block.oak_leaves: oak leaves
+block.oak_log: oak log
+block.packed_ice: packed ice
+block.podzol: podzol
+block.red_sand: red sand
+block.sand: sand
+block.sandstone: sandstone
+block.seagrass: seagrass
+block.short_grass: short grass
+block.snow: snow
+block.stone: stone
+block.tall_grass: tall grass
+block.water: water
+blocks: '{0} blocks'
+body-line: 'Body: {0}°C ({1})'
+bossbar-title: Body temperature {0}°C
+clothes-line: 'Clothing: {0}'
+env-cold: cold
+env-freezing: freezing
+env-hot: hot
+env-line: 'Environment: {0}°C ({1})'
+env-mild: mild
+env-warm: warm
+illness-cured: You have recovered
+illness-days: 'Illness: {0} d.'
+illness-got: 'You got sick: lie in a bed, eat, drink water'
+illness-hours: 'Illness: {0} h.'
+illness-milk-no-help: 'Milk does not help: the illness is cured only by rest'
+illness-over: the illness has passed
+illness-rest: 'You are lying down: rest warms you up. Type in chat to stand up'
+illness-rest-sick: 'You are lying down: rest helps you recover. Type in chat to stand up'
+illness-title: Illness
+last-op-none: none
+map-unavailable: 'map unavailable: {0}'
+no-limit: none
+no-overworld: no overworld world found
+no-permission: You don't have permission
+not-a-number: 'Not a number: {0}'
+nothing-running: Nothing is running
+nothing-to-change: Nothing to change (map is empty, everything is already in this state, or the radius is too small)
+pass-stopped: Pass stopped, progress saved
+player-not-found: Player not found
+probe-result: 'probe {0} {1}: {2}, above {3}, biome {4}'
+probe-usage: 'Usage: /climate probe <x> <z>'
+progress: '{0} chunks, {1} cells changed'
+radius-not-number: 'Radius must be a number: {0}'
+radius-part: ', radius {0} blocks'
+reason-biome: biome {0}
+reason-end: the end
+reason-heat-near: heat nearby
+reason-heat-very-near: very hot nearby
+reason-height: altitude
+reason-line: 'Environment cause: {0}'
+reason-nether: nether
+reason-neutral: neutral
+reason-rain: rain
+reason-season: season {0}
+reason-shelter: shelter
+reason-surface: underfoot {0}
+reason-thunder: thunderstorm
+reason-water: water
+reload-done: Config reloaded, season {0}
+remain-hours: '{0} h {1} min left'
+remain-minutes: '{0} min left'
+scan-finished: 'finished: {0}'
+scan-never: never ran
+scan-not-running: Scan is not running
+scan-paused: paused at ring {0}
+scan-ring: ', ring {0}'
+scan-started: 'Scan started: from world center outward, limit {0}'
+scan-stopped: Scan stopped, progress saved
+season-autumn: autumn
+season-busy: 'Season NOT changed: a world pass is running, try again shortly'
+season-current: 'Season: {0} ({1} min left)'
+season-set: 'Season set: {0}'
+season-spring: spring
+season-summer: summer
+season-winter: winter
+set-body: 'Body temperature: {0}°C ({1})'
+set-usage: 'Usage: /climate set <temperature> (in game)'
+standup-done: standing up...
+state-burning: Overheating
+state-cold: Cold
+state-cool: Cool
+state-freezing: Frostbite
+state-hot: Hot
+state-normal: Normal
+state-original: original
+state-warm: Warm
+status-cells: 'cells: spring {0}, summer {1}, autumn {2}, winter {3}, original {4}; rewritten by the last pass {5}'
+status-chunks: 'chunks by state: {0}'
+status-last: 'last operation: {0}'
+status-line: '{0}: body={1}°C state={2} ({3}) env={4}°C reason={5} clothes={6} season={7} remain_min={8}'
+status-map: 'map: {0} — {1} chunks, {2} cells, {3} MB'
+status-only-player: status works only for a player or with a player name
+status-running: 'currently running {0}: {1}'
+status-scan: 'scan: {0}'
+status-scan-done: 'scan: map complete'
+status-season: 'Season: {0}'
+summary-done: '{0}, {1} s'
+summary-error: 'aborted with error: {0}'
+summary-stopped: 'stopped: {0}'
+thermometer-given: Thermometer given to {0}
+thermometer-name: Thermometer
+unknown-season: Unknown season
+unknown-subcommand: 'Unknown subcommand: {0}'
+usage: 'Usage: /climate status|reload|season|set|thermometer|standup'
+whole-map: ', whole map'

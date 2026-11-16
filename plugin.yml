@@ -1,0 +1,17 @@
+name: Climate
+version: 1.0.0
+main: ru.geekideas.mc.climate.ClimatePlugin
+api-version: '26.3'
+authors: [aristocr2t]
+description: Seasons for the world (biomes, snow, ice) and for the player (body temperature, clothing, illness, rest and sleep).
+
+commands:
+  climate:
+    description: 'Climate: seasons of the world and body temperature'
+    usage: '/climate <status|season|scan|winter|spring|summer|autumn|restore|stop|reload|set|thermometer>'
+    permission: climate.admin
+
+permissions:
+  climate.admin:
+    description: Climate administrative subcommands
+    default: op

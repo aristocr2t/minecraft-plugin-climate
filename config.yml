@@ -1,0 +1,571 @@
+# Language of player-facing strings: a lang/<code>.yml file bundled with the
+# plugin or placed into plugins/Climate/lang/. Bundled: en, ru.
+language: en
+
+# Seasonal biomes: a map of original biomes and seasonal passes over it.
+# "Original world biome → season biome" tables: spring-map, summer-map, autumn-map, winter-map.
+# Key is what is stored in the database (original_biome), value is what to set in this season.
+# A biome missing from the tables never changes. Names are without the minecraft: prefix.
+# Typos are logged at startup and skipped.
+
+# Random ticks by season: snow and ice melting, crop growth.
+# Winter 0 — snow and ice accumulate (precipitation does not depend on this), summer 10 — fast melting.
+random-tick-speed:
+  spring: 2
+  summer: 2
+  autumn: 1
+  winter: 0
+
+# Seasonal ground: grass by season (tall -> short in autumn, removal in winter,
+# seeding in spring). Snow and ice are NOT touched here on purpose: far-weather
+# melts them gradually in chunks without players.
+thaw:
+  enabled: true
+  per-chunk: 48
+  # Seasonal ground: grass by season. Not touched in summer.
+  grass:
+    autumn: true # tall grass → short grass
+    winter: true # both are removed (almost all of it)
+    spring: true # dirt and podzol → grass
+    spring-turf-chance: 0.5 # buried dirt re-turfs into grass blocks in spring
+    winter-chance: 0.8
+    spring-chance: 0.3
+
+# Work batch per tick: chunks and milliseconds.
+chunks-per-tick: 16
+max-millis-per-tick: 20
+
+# Far weather, both directions, in every chunk without a player nearby (chunks near
+# players keep the vanilla algorithm). Mimics the vanilla chunk-tick weather attempt
+# (1 random column per 16 ticks per chunk).
+# Snow biome + precipitation: snow accumulates layer by layer, water freezes from
+# river banks and shores. Warm biome (spring/summer/autumn): snow melts one layer
+# per attempt, ice turns into water — gradually, like snowfall in reverse.
+# The pass sleeps after three full passes that changed nothing and wakes on
+# precipitation or a season/scan pass.
+# Note: for loaded chunks to pile up more than one snow layer, the vanilla game rule
+# snowAccumulationHeight (renamed max_snow_accumulation_height in 1.21.11+) must be
+# raised above 1, e.g. /gamerule snowAccumulationHeight 8 — by default vanilla makes
+# exactly one layer. The far algorithm uses max-snow-layers below.
+far-weather:
+  enabled: true
+  chunks-per-tick: 4
+  max-millis-per-tick: 25
+  # Vanilla rate: 1 weather attempt per 16 ticks per chunk. Attempts per chunk visit =
+  # attempts-per-tick × ticks in one full pass over the world, capped below.
+  attempts-per-tick: 0.0625
+  max-attempts-per-visit: 400
+  # How many snow layers can pile up in far chunks (1..8), one layer per successful attempt.
+  max-snow-layers: 7
+  # Frosted ice staging: bank ice starts as a young frosted crust instead of a full
+  # block, storms thicken it age by age into ice, thaw eats it age by age back
+  # into water. near-melt also advances crusts in chunks near players, where
+  # winter's randomTickSpeed 0 means vanilla never ages them.
+  frosted-ice:
+    enabled: true
+    near-melt: true
+  # A chunk generated after the season was applied (on disk but not in the biome map yet)
+  # is seasoned on its first visit: its original biomes are written to the map, the season
+  # biomes are applied, and the surface is dressed as if the season had been running there
+  # all along — snow of about the map-average depth ± snow-spread, bank ice, grass buried
+  # to dirt in the winter, tall grass shortened in the autumn. Only the first
+  # new-chunk-columns random columns are dressed (0..256), the rest catches up through
+  # the ordinary attempts.
+  new-chunk-seasoning: true
+  new-chunk-columns: 48
+  new-chunk-snow-spread: 1.0
+  # Water freezes from river banks and sea/ocean shores and spreads inward.
+  # Biome keys without minecraft:, always-snowy only.
+  # Arid neighbors keep rivers flowing and beaches sandy: a river or beach cell whose
+  # original neighbors are one of these never takes the frozen goal in winter.
+  arid-biomes:
+    [
+      savanna,
+      savanna_plateau,
+      windswept_savanna,
+      desert,
+      badlands,
+      wooded_badlands,
+      eroded_badlands,
+    ]
+  snow-biomes:
+    [
+      snowy_plains,
+      snowy_taiga,
+      snowy_beach,
+      snowy_slopes,
+      ice_spikes,
+      frozen_peaks,
+      jagged_peaks,
+      grove,
+      frozen_ocean,
+      frozen_river,
+    ]
+  # Dirt scars left where deep snow killed the grass re-turf over time
+  # (dirt with air above, next to a grass block, per successful attempt).
+  grass-regrow-chance: 0.8
+  # Vanilla kills grass under snow from 2 layers up, but only near players
+  # (random ticks). We reproduce it uniformly: grass under such snow turns
+  # to dirt with this chance per attempt, all across the map.
+  snow-kill-layers: 2
+  grass-die-chance: 0.06
+  # Summer growth, uniform away from players: short grass turns tall with
+  # grass-grow-chance, tall grass drops short grass on neighbouring soil
+  # with grass-spread-chance. Active in SUMMER only.
+  grass-grow-chance: 0.1
+  grass-spread-chance: 0.06
+# Wind, shared by the two cores (the blizzard blows the same way): derived from
+# world time only, so both plugins always agree — no wind state, no messages between
+# them. A full circle every cycle-days days plus a slow gust sway. Seasons has no
+# consumer for the wind yet; the formula lives here so both plugins can use it.
+wind:
+  cycle-days: 3
+
+# SQLite commit every N chunks.
+commit-every-chunks: 32
+# Scan progress line every N chunks.
+log-every-chunks: 200
+
+# Height band that goes into the map (4×4×4 cells — the game's own precision).
+min-y: 40
+max-y: 320
+
+# Scan on server start: resumes the map where it stopped.
+# The chunk list comes from the world region files: missing chunks are not generated,
+# already scanned chunks are not read a second time.
+scan-on-enable: true
+# Optional map limit in blocks from world center (0 = the whole map).
+scan-max-radius: 0
+
+# SPRING = return to original_biome (same as restore). If you want a separate spring,
+# uncomment the lines below — they override the original restoration.
+spring-map: {}
+# spring-map:
+#   plains: flower_forest
+#   forest: birch_forest
+#   taiga: birch_forest
+#   swamp: mangrove_swamp
+#   cherry_grove: cherry_grove
+
+summer-map:
+  plains: sunflower_plains
+  forest: forest
+  taiga: taiga
+  swamp: swamp
+  jungle: jungle
+  savanna: savanna
+  desert: desert
+  beach: beach
+  ocean: warm_ocean
+  river: river
+  cherry_grove: forest
+  snowy_taiga: taiga
+  snowy_plains: plains
+  snowy_beach: beach
+  snowy_slopes: meadow
+  frozen_ocean: ocean
+  frozen_river: river
+  frozen_peaks: windswept_hills
+  ice_spikes: plains
+  jagged_peaks: windswept_hills
+  grove: meadow
+
+# Autumn: duller and drier; taiga and windswept hills become snowy, and the
+# natively snowy biomes return after the green summer (identity entries below).
+autumn-map:
+  plains: windswept_hills
+  forest: dark_forest
+  taiga: snowy_taiga
+  old_growth_pine_taiga: snowy_taiga
+  old_growth_spruce_taiga: snowy_taiga
+  swamp: dark_forest
+  jungle: dark_forest
+  savanna: windswept_savanna
+  desert: badlands
+  beach: stony_shore
+  ocean: cold_ocean
+  river: river
+  cherry_grove: dark_forest
+  windswept_hills: snowy_slopes
+  windswept_gravelly_hills: snowy_slopes
+  windswept_forest: snowy_taiga
+  snowy_plains: snowy_plains
+  snowy_taiga: snowy_taiga
+  snowy_beach: snowy_beach
+  snowy_slopes: snowy_slopes
+  frozen_ocean: frozen_ocean
+  frozen_river: frozen_river
+  frozen_peaks: frozen_peaks
+  ice_spikes: ice_spikes
+  jagged_peaks: jagged_peaks
+  grove: grove
+  meadow: snowy_slopes
+  stony_peaks: snowy_slopes
+  snowy_taiga: taiga
+  snowy_plains: plains
+  snowy_beach: beach
+  frozen_ocean: ocean
+  frozen_river: river
+  jagged_peaks: jagged_peaks
+
+winter-map:
+  plains: snowy_plains
+  forest: snowy_taiga
+  taiga: snowy_taiga
+  old_growth_pine_taiga: snowy_taiga
+  old_growth_spruce_taiga: snowy_taiga
+  swamp: snowy_taiga
+  jungle: snowy_taiga
+  savanna: plains
+  desert: plains
+  beach: snowy_beach
+  ocean: frozen_ocean
+  river: frozen_river
+  cherry_grove: snowy_taiga
+  snowy_taiga: snowy_taiga
+  snowy_plains: snowy_plains
+  snowy_beach: snowy_beach
+  snowy_slopes: snowy_slopes
+  frozen_ocean: frozen_ocean
+  frozen_river: frozen_river
+  frozen_peaks: frozen_peaks
+  ice_spikes: ice_spikes
+  jagged_peaks: frozen_peaks
+  grove: grove
+
+# ============================================================
+# Player: body temperature, clothing, illness, day rest, night sleep,
+# seasonal weather director and the winter blizzard.
+# ============================================================
+# Language of player-facing strings: a lang/<code>.yml file bundled with the
+# plugin or placed into plugins/Climate/lang/. Bundled: en, ru.
+
+# How often to recalculate temperature (ticks; 20 = 1 second).
+interval-ticks: 20
+
+# Show body temperature in the boss bar.
+bossbar:
+  enabled: true
+  # Range stretched across the 0..100% bar.
+  min: 30.0
+  max: 43.0
+  # notched_6 / notched_10 / notched_12 / notched_20 / progress
+  style: notched_12
+
+# Base: normal body temperature.
+body-base: 36.6
+
+# How strongly the environment pulls the body: delta = (env - 20) * body-factor
+body-factor: 0.22
+
+# Drift: the fraction of the gap to the target temperature the body closes every
+# second (exponential approach: fast at first, then settles near the target).
+# 0.006 — naked in a winter frost: 34-35 °C in ~2 minutes standing, ~4 minutes
+# moving (movement raises the target, so the body settles higher).
+body-drift-per-second: 0.006
+
+# Recovery: when the body is returning to normal (34.0 -> 36.6) and the environment
+# is favorable — indoors or a comfortable ambient band — the drift is multiplied
+# (×25 closes the gap in ~20 seconds). Hypothermia forgives, it does not punish.
+recovery:
+  multiplier: 25.0
+  comfortable-min: 18.0
+  comfortable-max: 24.0
+
+# Beacon: standing nearby returns the body to normal quickly.
+beacon:
+  # Beacon search radius around the player (0 = disabled).
+  radius: 8
+  # How much faster the drift to normal is near a beacon.
+  multiplier: 6.0
+
+# Rest: sleeping and lying on a bed pull the body back to normal (36.6).
+rest:
+  # Drift multiplier while asleep.
+  sleep-multiplier: 4.0
+  # Drift multiplier while lying on a bed (sneak on it).
+  bed-multiplier: 2.0
+
+# ---------------------------- Environment -------------------
+environment:
+  base: 20.0
+  # Biome effect by key (substring match against the biome key).
+  biomes:
+    snowy: -15.0
+    frozen: -15.0
+    ice_spikes: -15.0
+    taiga: -5.0
+    grove: -8.0
+    windswept: -6.0
+    meadow: -2.0
+    forest: 0.0
+    plains: 2.0
+    swamp: 3.0
+    jungle: 8.0
+    savanna: 10.0
+    badlands: 12.0
+    desert: 15.0
+  # Above this height every step subtracts degrees.
+  height-start: 100
+  height-per: 30.0
+  height-step: -1.0
+  # Seasonal adjustments.
+  seasons:
+    WINTER: -10.0
+    SPRING: -3.0
+    SUMMER: 10.0
+    AUTUMN: 0.0
+  weather:
+    rain: -4.0
+    thunder: -6.0
+  # Water.
+  water: -8.0
+  water-snowy: -12.0
+  # Shelter from cold/heat: works when there is a roof overhead AND at least
+  # shelter-walls horizontal sides closed (walls, stairs, fences, glass).
+  # 10.0 — noticeable protection; 20 — fully cancels the environment.
+  shelter: 10.0
+  shelter-walls: 2
+
+  # Block underfoot: ice and snow cool the player down.
+  surface:
+    SNOW: -4.0
+    SNOW_BLOCK: -5.0
+    POWDER_SNOW: -12.0
+    ICE: -8.0
+    FROSTED_ICE: -8.0
+    PACKED_ICE: -10.0
+    BLUE_ICE: -12.0
+
+  # Hot blocks within radius (blocks) — a bonus per each found type.
+  heat-radius: 4
+  heat:
+    LAVA: 15.0
+    FIRE: 10.0
+    SOUL_FIRE: 10.0
+    MAGMA_BLOCK: 8.0
+    CAMPFIRE: 12.0
+    SOUL_CAMPFIRE: 10.0
+    FURNACE: 4.0
+    BLAST_FURNACE: 6.0
+    SMOKER: 4.0
+    LANTERN: 2.0
+    SOUL_LANTERN: 2.0
+    TORCH: 2.0
+    WALL_TORCH: 2.0
+    GLOWSTONE: 3.0
+  # Dimensions.
+  dimensions:
+    world_the_nether: 20.0
+    world_the_end: -10.0
+
+# ---------------------------- Clothing ----------------------
+# Warmth of armor. In the cold it insulates: leather and netherite are warm suits
+# (a full set + movement = 36.6 even in a frost; standing still freezes you only
+# after tens of minutes), iron/diamond warm a bit. In the heat the same armor
+# works against you — take it off in summer.
+# A wet player gets half of the warmth.
+clothing:
+  # How much one warmth point insulates in the cold (capped at 0.9 total).
+  insulation-per-point: 0.19
+  LEATHER_HELMET: 1.0
+  LEATHER_CHESTPLATE: 1.0
+  LEATHER_LEGGINGS: 1.0
+  LEATHER_BOOTS: 1.0
+  CHAINMAIL_HELMET: 0.0
+  CHAINMAIL_CHESTPLATE: 0.0
+  CHAINMAIL_LEGGINGS: 0.0
+  CHAINMAIL_BOOTS: 0.0
+  IRON_HELMET: 0.75
+  IRON_CHESTPLATE: 0.75
+  IRON_LEGGINGS: 0.75
+  IRON_BOOTS: 0.75
+  GOLDEN_HELMET: 0.5
+  GOLDEN_CHESTPLATE: 0.5
+  GOLDEN_LEGGINGS: 0.5
+  GOLDEN_BOOTS: 0.5
+  DIAMOND_HELMET: 0.75
+  DIAMOND_CHESTPLATE: 0.75
+  DIAMOND_LEGGINGS: 0.75
+  DIAMOND_BOOTS: 0.75
+  NETHERITE_HELMET: 1.0
+  NETHERITE_CHESTPLATE: 1.0
+  NETHERITE_LEGGINGS: 1.0
+  NETHERITE_BOOTS: 1.0
+
+# Cold outdoors in winter wants a FULL set of armor: each missing piece pulls
+# the body down additionally (per piece, °C of target shift).
+# Indoors there is no danger: a cold house can only make you cool (mild slowness),
+# and being dressed at home in winter feels just right (36.6).
+cold:
+  missing-piece-penalty: 0.6
+  shelter-min-deviation: 1.6
+  # In the cold, activity (movement, mining, sprint, food) only compensates the
+  # frost and never heats beyond this shift: active in leather in winter = ~36.6.
+  activity-cap: 0.3
+
+# Activity generates heat: walking or digging keeps you warm in the cold
+# (naked calm walking survives a frost for about 10 minutes before trouble).
+activity:
+  move-bonus: 2.0
+  mine-bonus: 2.5
+  mine-seconds: 5
+
+# Heat: armor amplifies it (armor-heat-factor × warmth), moving in the heat adds
+# move-heat, the summer sun hits a bare head (wear a helmet when it is hot).
+# Indoors heat is damped by how light your clothing is: naked at home in summer
+# is comfortable (36.6), working out in armor gets hot (slowness, never death).
+heat:
+  armor-heat-factor: 0.12
+  move-heat: 1.5
+  helmet-from-env: 25.0
+  helmet-bonus: 3.0
+  shelter-max-delta: 4.0
+
+# Weather does not affect a player in such armor (damping fraction per item).
+# Armor has no weather resistance: metal and diamond are neutral.
+weather-resist: {}
+
+# Chainmail is a metal mesh: pulls the body down,
+# saves you in heat, hurts in cold (0.5 °C per item).
+cooling:
+  CHAINMAIL_HELMET: 0.5
+  CHAINMAIL_CHESTPLATE: 0.5
+  CHAINMAIL_LEGGINGS: 0.5
+  CHAINMAIL_BOOTS: 0.5
+
+# Other body factors.
+factors:
+  well-fed: 0.4 # food >= 18
+  hungry: -0.6 # food <= 6
+  sprinting: 1.0
+  wet: -1.0
+
+# ---------------------------- States ------------------------
+# Body <= max falls into a state (first from the top). Effects are as in Minecraft.
+# Display labels are localized in lang/<code>.yml (keys state-<id>).
+states:
+  - id: freezing
+    max: 31.0
+    damage: 1.0
+    damage-seconds: 30
+    effects: [{ type: SLOWNESS, amplifier: 2 }]
+  - id: cold
+    max: 34.0
+    damage: 1.0
+    damage-seconds: 60
+    effects: [{ type: SLOWNESS, amplifier: 1 }]
+  - id: cool
+    max: 35.5
+    effects: [{ type: SLOWNESS, amplifier: 0 }]
+  - id: normal
+    max: 38.0
+  - id: warm
+    max: 40.0
+  - id: hot
+    max: 42.0
+    # heat is discomfort, not death: slowness and hunger, no damage
+    effects: [{ type: SLOWNESS, amplifier: 0 }, { type: HUNGER, amplifier: 0 }]
+  - id: burning
+    max: 99.0
+    damage: 1.0
+    damage-seconds: 30
+    effects: [{ type: NAUSEA, amplifier: 0 }]
+
+# Boss bar color per body state.
+colors:
+  freezing: BLUE
+  cold: PURPLE
+  cool: WHITE
+  normal: GREEN
+  warm: YELLOW
+  hot: RED
+  burning: RED
+
+# ---------------------------- Illness -----------------------
+illness:
+  enabled: true
+  # How many seconds in a row outside the "normal" state leads to illness.
+  seconds-outside: 60
+  # Illness duration in days: symptoms fade gradually, recovery is random
+  # and happens only while resting in bed (higher chance at night).
+  duration: 3
+  # Chance to recover during one night in bed (half of it during the day).
+  cure-chance-night: 0.4
+  effects:
+    [
+      { type: NAUSEA, amplifier: 0 },
+      { type: WEAKNESS, amplifier: 0 },
+      { type: HUNGER, amplifier: 0 },
+    ]
+
+# ---------------------------- Thermometer -------------------
+thermometer:
+  # Thermometer item material.
+  material: CLOCK
+  # custom-model-data for a resource pack (0 = don't set).
+  custom-model-data: 0
+  glint: true
+  # Show a summary in the action bar while holding the thermometer.
+  actionbar: true
+  actionbar-interval-ticks: 40
+  # Crafting recipe (only if recipe-enabled: true).
+  recipe-enabled: false
+  recipe-shape: [' G ', ' C ', ' R ']
+  recipe-ingredients:
+    G: GLASS
+    C: CLOCK
+    R: REDSTONE
+
+# ---------------------------- Seasons -----------------------
+seasons:
+  # Season clock: how many minutes one season lasts.
+  duration-minutes: 1440
+  # Starting season: WINTER / SPRING / SUMMER / AUTUMN.
+  start: WINTER
+  # Run `/climate <name>` on season change: applies the season in the world too.
+  call-terrain-pass: true
+  order: [WINTER, SPRING, SUMMER, AUTUMN]
+
+# Seasonal weather bias (like the real world): the director rolls on a timer and
+# nudges the natural cycle — vanilla decides durations. Snow still depends on biome.
+weather-director:
+  roll-every-ticks: 1200 # once a minute
+  clear-storm-chance:
+    WINTER: 0.15
+    SPRING: 0.04
+    SUMMER: 0.06
+    AUTUMN: 0.05
+  storm-thunder-chance:
+    WINTER: 0.05
+    SPRING: 0.15
+    SUMMER: 0.6
+    AUTUMN: 0.15
+
+# ---------------------------- Wind --------------------------
+# Shared by both cores: the wind is derived from world time only — a full
+# circle every cycle-days days plus a slow gust sway — so both plugins compute the
+# same direction without talking to each other.
+blizzard:
+  enabled: true
+  # Flakes spawn in a cube of this radius around the player's eyes (±3 blocks in Y).
+  radius: 14
+  # Flakes per player per 2 ticks.
+  particles-per-tick: 30
+  # Horizontal wind speed (0 = flakes only fall).
+  wind-speed: 0.45
+  # Density multiplier while the storm thunders (plus a gust every ~10 seconds).
+  thunder-multiplier: 2
+  # Biomes where a blizzard is possible (keys without minecraft:).
+  biomes:
+    [
+      snowy_plains,
+      ice_spikes,
+      snowy_taiga,
+      taiga,
+      snowy_slopes,
+      jagged_peaks,
+      frozen_peaks,
+      frozen_river,
+      frozen_ocean,
+    ]
